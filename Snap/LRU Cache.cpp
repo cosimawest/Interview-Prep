@@ -1,6 +1,6 @@
 class LRUCache {
 public:
-    unordered_map<int, list<pair<int, int>>::iterator> cache; // keeps track iterator pos/val of li item
+    unordered_map<int, list<pair<int, int>>::iterator> cache; // keeps track iterator pos/val of li item (::iterator so splice works)
     list<pair<int, int>> li; // keeps track of LRU (through order)
     int cap; // obvi
     
