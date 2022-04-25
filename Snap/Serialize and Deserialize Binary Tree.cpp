@@ -23,6 +23,7 @@ public:
         return deserialize(s);
     }
     
+    // NOTE: MUST USE '&' TO PASS IN CREATED STRINGSTREAM VARIABLE!!!
     TreeNode* deserialize(stringstream& data) {
         string temp;
         
