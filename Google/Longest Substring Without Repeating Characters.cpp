@@ -1,25 +1,27 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        if(s.size() <= 1) return s.size();
-
-        unordered_set<char> res;
+        // optimized sliding window
         
-        int maxS = 0;
-        int r = 0;
-        int l = 0;
+        // instead of deleting the chars in a set/map til there are no repeats,
+        // make hashmap (or 256-length vector) that stores the latest position
+        // of each char
+        //
+        // for each char, we check it's hashmap value
+        // if it's value is -1, it isn't repeat and will never be larger than l, we continue
+        // if it's value is something else, then it is a repeat. We have to check to see if it's
+        // latest position is greater than l. if it is, then that means that 
         
-        while(r < s.size()) {
-            if(res.count(s[r]) == 0) {
-                res.insert(s[r]);
-                maxS = max(maxS, (int)res.size());
-                r++;
-            } else {
-                res.erase(s[l]);
-                l++;
-            }
+        vector<int> chars(256, -1);
+        
+        int l = -1, maxL = 0, n = s.size();
+        
+        for(int i = 0; i < n; i++) {
+            if(chars[s[i]] > l) l = chars[s[i]];
+            chars[s[i]] = i;
+            maxL = max(maxL, i - l);
         }
         
-        return maxS;
+        return maxL;
     }
 };
