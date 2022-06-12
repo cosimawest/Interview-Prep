@@ -1,33 +1,33 @@
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
+        /*
+            fix one int in nums
+            
+            go to next one and search remaining nums for the corresponding num
+        */
+        
+        vector<vector<int>> res;
+        unordered_map<int, int> map;
+        
         sort(nums.begin(), nums.end());
         
-        if(nums.size() < 3) return {};
-        if(nums[0] > 0) return {};
-        
-        unordered_map<int, int> poss;
-        vector<vector<int>> res;
+        for(int i = 0; i < nums.size(); i++) {
+            map[nums[i]] = i;
+        }
         
         for(int i = 0; i < nums.size(); i++) {
-            poss[nums[i]] = i;
-        }
-
-        
-        int j = 0;
-        
-        for(int i = 0; i < nums.size() - 2; i++) {
-            if(nums[i] > 0) return res;
-            
+            if(nums[i] > 0) break;
+            int a = nums[i];
             for(int j = i + 1; j < nums.size(); j++) {
-                int expected = -1 * (nums[i] + nums[j]);
-                
-                if(poss.count(expected) && poss[expected] > j) res.push_back({nums[i], nums[j], expected});
-                
-                j = poss[nums[j]];
+                int b = nums[j];
+                int c = -1*(a + b);
+                if(map.count(c) && map[c] > j) res.push_back({a,b,c});
+                j = map[nums[j]];
             }
-            i = poss[nums[i]];
+            i = map[nums[i]];
         }
+        
         return res;
     }
 };
