@@ -1,18 +1,21 @@
 class Solution {
 public:
     int lengthOfLongestSubstringTwoDistinct(string s) {
-        // AHHH IM A GENIUS HAFDHADK
+        // if i use a count variable then I don't have to use erase
         
-        unordered_map<char, int> map;
-                
-        int start=0, end=0, res=INT_MIN;
+        vector<int> map(256, 0);
         
-        while(end < s.size()){
-            map[s[end++]]++;
-                
-            while(map.size() > 2)
-                if(map[s[start++]]-- == 1) map.erase(s[start-1]);
-            
+        // iterate through s, have count variable
+        // augment s[end] in map (agument count if letter i map was at 0)
+        // while count > 2 move start up, decrementing s[start] in map (decrement count if at 0)
+        
+        // return end-start
+        
+        int start = 0, end = 0, count = 0, res = 0;
+        
+        while(end < s.size()) {
+            if(map[s[end++]]++ == 0) count++;
+            while(count > 2) if(map[s[start++]]-- == 1) count--;
             res = max(res, end-start);
         }
         
