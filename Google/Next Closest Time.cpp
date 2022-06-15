@@ -1,35 +1,37 @@
 class Solution {
 public:
     string nextClosestTime(string time) {
+        // iterate through time (skip if ":")
+        // replace curr digit with next highest digits available
+        // check if valid, if so return this time
+        // if this is already the highest digit, replace with the lowest digit
+        // only increase curr digit iterator if the time is valid
+        // return time
+        
         set<char> sorted;
         
-        for(auto i : time) {
-            if(i == ':') continue;
-            
-            sorted.insert(i);
+        for(auto t : time) {
+            if(t == ':') continue;
+            sorted.insert(t);
         }
         
-        string res = time;
-        
-        
-        for(int i = time.size()-1; i >= 0; i--) {
-            if(time[i] == ':' ) continue;
+        for(int i = time.size() - 1; i >= 0; i--) {
+            if(time[i] == ':') continue;
             
             auto it = sorted.find(time[i]);
             
-            // if not largest num
             if(*it != *sorted.rbegin()) {
-                // it++ is next largest num, replace res[i] with it
+                
                 it++;
-                res[i] = *it;
-                // check if valid time
-                if((i>=3 && stoi(res.substr(3,2))<60) || (i<2&&stoi(res.substr(0,2))<24)) {
-                    return res;
-                }
-            }
-            // replaces res[i] with smallest available num
-            res[i] = *sorted.begin();
+                time[i] = *it;
+                if((time[0] < '2' || (time[0] == '2' && time[1] <= '3')) && time[3] <= '5') return time;
+                // if valid, return time
+                // if not valid then no other higher number will be valid either. make lowest number
+            } 
+            // if time[i] is the highest or previously not valid
+            time[i] = *sorted.begin();
         }
-        return res;
+        
+        return time;
     }
 };
