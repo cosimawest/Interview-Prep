@@ -1,28 +1,26 @@
 class Solution {
 public:
-    bool isValid(string s) {        
-        stack<char> res;
+    bool isValid(string s) {
+        // add characters in s to stack if it's open
+        // if it's closed, compare to top of the stack (must be matching open parenthese)
+        // pop stack
         
-        for(auto c : s) {            
-            if(isOpen(c)) res.push(c);
-            else if(res.empty() || (!res.empty() && !isPartner(res.top(), c))) {
-                res.pop();
-                return false;
+        stack<char> opens;
+        
+        for(auto c : s) {
+            if(c == '(' || c == '[' || c == '{') opens.push(c);
+            else {
+                if(opens.empty() || !check(opens.top(), c)) return false;
+                opens.pop();
             }
-            else res.pop();
         }
         
-        if(res.empty()) return true;
+        if (opens.empty()) return true;
         return false;
     }
     
-    bool isOpen(char c) {
-        if(c == '(' || c == '[' || c == '{') return true;
-        else return false;
-    }
-    
-    bool isPartner(char a, char b) {
-        if((a == '(' && b == ')') || (a == '[' && b == ']') || (a == '{' && b == '}')) return true;
+    bool check(char a, char b) {
+        if(a == '(' && b == ')' || a == '[' && b == ']' || a == '{' && b == '}') return true;
         return false;
     }
 };
